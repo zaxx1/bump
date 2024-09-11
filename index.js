@@ -133,7 +133,7 @@ const login = async (username) => {
   }
 
   if (access_token) {
-    logs(username, '', colors.yellow('Login thành công !'));
+    logs(username, '', colors.yellow('Login berhasil brekk !'));
     await setDataMapAuth(username, {
       ...user,
       token: access_token,
@@ -179,8 +179,8 @@ const statusFarming = async (username, showData) => {
     if(showWallet){
       logs(
         username,
-        'Địa chỉ ví:',
-        wallet ? colors.yellow(wallet) : colors.red('Chưa bind địa chỉ ví !'),
+        'address wallet:',
+        wallet ? colors.yellow(wallet) : colors.red('belum bind address wallet !'),
       );
     }
 
@@ -192,11 +192,11 @@ const statusFarming = async (username, showData) => {
       if (boost) {
         logs(
           username,
-          `Đang active boots: ${boost}`,
-          colors.cyan(`Active tới ngày ${toLocalTime(active_booster_finish_at)}`),
+          `Mengaktifkan boost: ${boost}`,
+          colors.cyan(`Aktif hingga tanggal ${toLocalTime(active_booster_finish_at)}`),
         );
       } else {
-        logs(username, 'Tự động mua boots x5 ...');
+        logs(username, 'Membeli boost x5 ...');
         await buybootX5(username);
       }
     }
@@ -206,7 +206,7 @@ const statusFarming = async (username, showData) => {
     }
 
     if(showTime){
-      logs(username, 'Thời gian claim:', colors.yellow(timeClaim));
+      logs(username, 'Waktu klaim:', colors.yellow(timeClaim));
     }
     
     return status;
@@ -228,13 +228,13 @@ const startFarm = async (username) => {
         hash: '9129340eb103c1d43b157c0b9e9ad5e33e68a68e1b12b6e2542eca8702eeada8',
       }),
     });
-    logs(username, 'Start farming thành công !');
+    logs(username, 'Mulai farming !');
     const response = await res.json();
     const { status } = response
     if(status === 200){
-      logs(username, 'Farm thành công !');
+      logs(username, 'Farming berhasil !');
     } else {
-      errors('Farm lỗi !')
+      errors('Farming gagal !')
     }
   } catch (error) {
     errors(username, error);
@@ -248,8 +248,8 @@ const retryStartFarm = async (username) => {
   } catch (error) {
     errors(
       username,
-      'Start farm error !',
-      colors.yellow(`Start lại sau mỗi 2s, lần claim thứ ${retryCount}`),
+      'Gagal mulai farming !',
+      colors.yellow(`Mulai setelah 2 detik, percobaan ke- ${retryCount}`),
     );
     delay(2, true);
     if (retryCount <= RETRY_REQUEST) {
@@ -278,7 +278,7 @@ const retryClaim = async (username) => {
 };
 
 const randomTapCount = (username) => {
-  if (username === 'uchihaObitoAntiSenju') {
+  if (username === 'Danesaur') {
     return Math.floor(Math.random() * (20000000 - 15000000 + 1)) + 15000000;
   } else return Math.floor(Math.random() * (10000000 - 5000000 + 1)) + 50000000;
 };
@@ -299,9 +299,9 @@ const claiming = async (username) => {
     const response = await res.json();
     const { statusCode } = response
     if(statusCode === 200){
-      logs(username, 'Claim thành công !');
+      logs(username, 'Claim berhasil !');
     } else {
-      errors('Claim lỗi !')
+      errors('Claim gagal !')
     }
 
   } catch (error) {
@@ -325,7 +325,7 @@ const buybootX5 = async (username) => {
     const response = await res.json();
     const { finish_at, id } = response;
     if (finish_at) {
-      logs(username, `Mua boots ${id} thành công !`, colors.red(' 😎😎😎 '));
+      logs(username, `Pembelian boost ${id} berhasil !`, colors.red(' 😎😎😎 '));
     }
   } catch (error) {
     errors(username, error);
@@ -351,7 +351,7 @@ const doQuest = async (username) => {
 
 
   if (!questUnComplete.length) {
-    logs(username, 'Đã hoàn thành tất cả các quest !');
+    logs(username, 'Sudah menyelesaikan quest !');
     return;
   }
   
@@ -359,7 +359,7 @@ const doQuest = async (username) => {
   const listQuestNotTele = questUnComplete.filter((e) => ![2,3,8,24].includes(e?.id))
 
   if(listQuestTele.length){
-    logs(username, '',colors.red('Còn quest telegram chưa làm !!!'));
+    logs(username, '',colors.red('Masih ada Quest yg belom!!!'));
   }
 
   for await (const quest of listQuestNotTele) {
@@ -368,7 +368,7 @@ const doQuest = async (username) => {
     process.stdout.write(
       `[ ${colors.magenta(`${username}`)} ]` +
         colors.yellow(` Quest : ${colors.white(name)} `) +
-        colors.red('Đang làm... '),
+        colors.red('proses... '),
     );
     await delay(2, true);
     const isFinish = await completeQuest(username, id);
@@ -383,7 +383,7 @@ const doQuest = async (username) => {
       process.stdout.write(
         `[ ${colors.magenta(`${username}`)} ]` +
           colors.yellow(` Quest : ${colors.white(name)} `) +
-          colors.red('Faild !                  '),
+          colors.red('GAGAL !                  '),
       );
     }
     console.log();
@@ -435,7 +435,7 @@ const friendCheck = async (username) => {
     const { friend_claim } = response;
     if (!!friend_claim) {
       const balance = await friendClaim(username);
-      logs(username, 'Claim từ bạn bè:', colors.yellow(formatNumber(balance)));
+      logs(username, 'klaim dari teman:', colors.yellow(formatNumber(balance)));
     }
   } catch (error) {
     console.log(error);
@@ -459,9 +459,9 @@ const friendClaim = async (username) => {
     const response = await res.json();
     const { code, balance } = response;
     if(code === 400){
-      errors(username,'Claim point bạn bè lỗi !')
+      errors(username,'Gagal klaim poin dari teman !')
     } else {
-      logs(username,'Claim bạn bè thành công !', colors.cyan(`Balance: ${formatNumber(balance)}`))
+      logs(username,'Klaim teman berhasil !', colors.cyan(`Balance: ${formatNumber(balance)}`))
     }
     return balance;
   } catch (error) {
@@ -486,11 +486,11 @@ async function loadProfile() {
       });
     }
     console.log(
-      colors.green(`Load thành công ${colors.white(v.length)} profile`),
+      colors.green(`Berhasil memuat ${colors.white(v.length)} profile`),
     );
     return v;
   }
-  console.log(colors.red('Không tìm thấy thông tin nào trong data.txt'));
+  console.log(colors.red('Tidak menemukan informasi pada data.txt'));
   return [];
 }
 
@@ -509,7 +509,7 @@ async function waitWithCountdown(seconds) {
   for (let i = seconds; i >= 0; i--) {
     readline.cursorTo(process.stdout, 0);
     process.stdout.write(
-      `===== Đã hoàn thành tất cả tài khoản, chờ ${i} giây để tiếp tục vòng lặp =====`,
+      `===== Semua akun telah selesai, tunggu ${i} detik untuk lanjut =====`,
     );
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
@@ -519,16 +519,16 @@ async function waitWithCountdown(seconds) {
 const getTimeClaimMin = async () => {
   const keyValue = Array.from(timeClaim, ([k, v]) => ({ k, v }));
   if(!keyValue.length){
-    errors('','Chưa tài khoản nào login !')
+    errors('','Tidak ada akun yg login !')
     return
   }
   const nearest = Math.min(...Object.values(keyValue.map((i) => i.v)));
   const data = keyValue.find((i) => i.v === nearest);
   console.log(
     colors.red(
-      `======== Tiếp theo ${colors.green(
+      `======== Selanjutnya ${colors.green(
         data.k,
-      )} thời gian claim : ${colors.cyan(toLocalTime(nearest))}`,
+      )} Waktu claim : ${colors.cyan(toLocalTime(nearest))}`,
     ),
   );
   const currentTimestamp = Math.floor(Date.now() / 1000);
