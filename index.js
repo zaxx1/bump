@@ -1,4 +1,4 @@
-const { delay } = require('../modules/core');
+const { delay } = require('./modules');
 const fs = require('fs');
 const path = require('path');
 const colors = require('colors');
