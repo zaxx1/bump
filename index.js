@@ -140,7 +140,7 @@ const login = async (username) => {
     });
     return true
   } else {
-    errors(username, 'Login thất bại !');
+    errors(username, 'Login gagal brek !');
     return
   }
 };
@@ -267,7 +267,7 @@ const retryClaim = async (username) => {
     errors(
       username,
       'Claim error !',
-      colors.yellow(`Claim lại sau mỗi 2s, lần claim thứ ${retryCount}`),
+      colors.yellow(`mulai ulang setiap 2 detik,klaim ke- ${retryCount}`),
     );
     delay(2, true);
     if (retryCount <= RETRY_REQUEST) {
